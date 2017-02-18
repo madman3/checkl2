@@ -9,5 +9,8 @@
 #ifndef FacebookLoginDemo_Bridging_Header_h
 #define FacebookLoginDemo_Bridging_Header_h
 
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
+
 
 #endif /* FacebookLoginDemo_Bridging_Header_h */

@@ -9,5 +9,7 @@
 import UIKit
 
 class CheckInModel: NSObject {
-
+    var location: String?
+    var message: String?
+    var imageUrl: String?
 }

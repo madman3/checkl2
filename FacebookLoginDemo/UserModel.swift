@@ -9,5 +9,8 @@
 import UIKit
 
 class UserModel: NSObject {
-
+    var id: String?
+    var userName: String?
+    var email: String?
+    var gender: String?
 }
