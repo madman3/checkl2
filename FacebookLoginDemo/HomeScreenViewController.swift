@@ -41,6 +41,9 @@ class HomeScreenViewController: UIViewController, CLLocationManagerDelegate {
 //        locationManager.desiredAccuracy = kCLLocationAccuracyBest
 //        locationManager.startUpdatingLocation()
         self.ref.child("users").child(FBSDKAccessToken.current().userID).setValue(["username": "lalit"])
+        
+        messageTextView.layer.cornerRadius = 4.0
+        messageTextView.layer.masksToBounds = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -61,7 +64,7 @@ class HomeScreenViewController: UIViewController, CLLocationManagerDelegate {
                     print("Place name = \(place.name)")
                     self.locationLabel.text = place.formattedAddress
                     self.checkIn.location = place.formattedAddress
-                    self.ref.child("users/\(FBSDKAccessToken.current().userID)/location").setValue(place.formattedAddress)
+                    self.ref.child("users/\(FBSDKAccessToken.current().userID!)/location").setValue(place.formattedAddress)
                 }
             }
         })
@@ -99,7 +102,13 @@ class HomeScreenViewController: UIViewController, CLLocationManagerDelegate {
 //    }
     
     @IBAction func postButtonAction(_ sender: Any) {
-        
+        checkIn.message = messageTextView.text
+        self.ref.child("images").child(FBSDKAccessToken.current().userID).childByAutoId().setValue(["address": checkIn.location, "message": checkIn.message, "image_url": checkIn.imageUrl])
+        let alert = UIAlertController(title: "Check-In", message: "You post has been submitted successfully", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+        messageTextView.text = ""
+        imageView.image = nil
     }
     
     @IBAction func signoutButtonAction(_ sender: Any) {
@@ -114,9 +123,6 @@ class HomeScreenViewController: UIViewController, CLLocationManagerDelegate {
     }
 
     @IBAction func pickImageAction(_ sender: Any) {
-    }
-    
-    @IBAction func uploadButtonAction(_ sender: Any) {
         let imagePickerController = ImagePickerController()
         imagePickerController.delegate = self
         imagePickerController.imageLimit = 1
@@ -127,11 +133,6 @@ class HomeScreenViewController: UIViewController, CLLocationManagerDelegate {
         let autocompleteController = GMSAutocompleteViewController()
         autocompleteController.delegate = self
         present(autocompleteController, animated: true, completion: nil)
-    }
-
-    @IBAction func submitButtonAction(_ sender: Any) {
-        checkIn.message = messageTextView.text
-        self.ref.child("images").child(FBSDKAccessToken.current().userID).childByAutoId().setValue(["address": checkIn.location, "message": checkIn.message, "image_url": checkIn.imageUrl])
     }
 }
 
